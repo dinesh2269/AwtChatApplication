@@ -16,8 +16,10 @@ class HandleClientThread implements Runnable {
 	Socket ss;
 	List<Socket> clientsList;
 	Map<String, String> map;
+	String name;
 
-	HandleClientThread(Socket ss, List<Socket> clientsList) {
+	HandleClientThread(String name, Socket ss, List<Socket> clientsList) {
+		this.name = name;
 		this.ss = ss;
 		this.clientsList = clientsList;
 		this.clientsList.add(ss);
@@ -33,7 +35,7 @@ class HandleClientThread implements Runnable {
 				String str = br.readLine();
 				for (Socket s : clientsList) {
 					PrintWriter o = new PrintWriter(s.getOutputStream(), true);
-					o.println(str);
+					o.println(this.name + ":" + str);
 				}
 			}
 		} catch (IOException e) {
@@ -51,8 +53,10 @@ public class ServerClass {
 
 		while (true) {
 			Socket s = ss.accept();
+			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			String name = br.readLine();
 			System.out.println("listening " + s);
-			new Thread(new HandleClientThread(s, clientsList)).start();
+			new Thread(new HandleClientThread(name, s, clientsList)).start();
 		}
 	}
 
