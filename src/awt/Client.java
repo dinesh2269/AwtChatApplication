@@ -1,5 +1,6 @@
 package awt;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -60,14 +61,14 @@ public class Client extends JFrame implements Runnable {
 		allMsgsArea.setBounds(100, 250, 100, 30);
 
 		displayArea = new JTextArea();
-		displayArea.setBounds(100, 300, 500, 200);
 		displayArea.setEditable(false);
-		// scrollArea = new JScrollPane(displayArea);
-		// scrollArea.setBounds(100, 300, 500, 200);
-		// scrollArea.setPreferredSize(new Dimension(1000, 1000));
-		// scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		// frame.add(scrollArea);
+	
+		 scrollArea = new JScrollPane(displayArea);
+		 scrollArea.setBounds(100, 300, 500, 200);
+//		 scrollArea.setPreferredSize(new Dimension(350, 100));
+		 scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		 scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		 frame.add(scrollArea);
 
 		connectUsersLabel = new JLabel("Connected Users");
 		connectUsersLabel.setBounds(750, 100, 100, 30);
@@ -85,8 +86,8 @@ public class Client extends JFrame implements Runnable {
 		frame.add(sendbtn);
 		frame.add(connectUsersLabel);
 		frame.add(allMsgsArea);
-		// frame.add(scrollArea);
-		frame.add(displayArea);
+//		 frame.add(scrollArea);
+//		frame.add(displayArea);
 		frame.add(connectedUsers);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);

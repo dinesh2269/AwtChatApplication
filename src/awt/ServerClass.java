@@ -34,11 +34,10 @@ class HandleClientThread implements Runnable {
 				Scanner sc = new Scanner(System.in)) {
 			while (true) {
 				String str = br.readLine();
-				System.out.println(str);
 				if (str.length() != 0) {
 					for (Socket s : clientsList) {
 						PrintWriter o = new PrintWriter(s.getOutputStream(), true);
-						o.println(this.name + ":" + str);
+						o.println(this.name + " : " + str);
 					}
 				}
 			}
@@ -58,7 +57,6 @@ public class ServerClass {
 			Socket s = ss.accept();
 			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			String name = br.readLine();
-			System.out.println(name);
 			System.out.println("listening " + s);
 			
 			 HandleClientThread.connectedUsers.add(name);
