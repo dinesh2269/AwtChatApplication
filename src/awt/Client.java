@@ -13,6 +13,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -25,16 +26,17 @@ public class Client extends JFrame implements Runnable {
 	JButton sendbtn;
 	JLabel allMsgsArea;
 	JTextArea displayArea;
+	JScrollPane scrollArea;
 	JLabel connectUsersLabel;
 	JTextArea connectedUsers;
 	Socket s;
 	BufferedReader br;
+	PrintWriter out;
 
-	public Client(String name) throws IOException {
-		this.s = new Socket("localhost", 60000);
-		PrintWriter o = new PrintWriter(this.s.getOutputStream(), true);
-		o.println(name);
-		this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+	public Client(Socket s, String name, BufferedReader br, PrintWriter out) throws IOException {
+		this.s = s;
+		this.br = br;
+		this.out = out;
 		frame = new JFrame(name);
 		messageLabel = new JLabel("Enter message");
 		messageLabel.setBounds(100, 60, 100, 30);
@@ -44,20 +46,15 @@ public class Client extends JFrame implements Runnable {
 
 		sendbtn = new JButton("Send");
 		sendbtn.setBounds(610, 100, 70, 30);
-		sendbtn.addActionListener(new ActionListener() {
 
+		sendbtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				String str = message.getText();
+				message.setText(null);
 				if (str != null) {
-					try (PrintWriter o = new PrintWriter(s.getOutputStream(), true);) {
-						o.println(str);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					out.println(str);
 				}
-
 			}
 		});
 
@@ -67,6 +64,12 @@ public class Client extends JFrame implements Runnable {
 		displayArea = new JTextArea();
 		displayArea.setBounds(100, 300, 500, 200);
 		displayArea.setEditable(false);
+		// scrollArea = new JScrollPane(displayArea);
+		// scrollArea.setBounds(100, 300, 500, 200);
+		// scrollArea.setPreferredSize(new Dimension(1000, 1000));
+		// scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		// scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		// frame.add(scrollArea);
 
 		connectUsersLabel = new JLabel("Connected Users");
 		connectUsersLabel.setBounds(750, 100, 100, 30);
@@ -75,6 +78,11 @@ public class Client extends JFrame implements Runnable {
 		connectedUsers.setBounds(750, 150, 150, 300);
 		connectedUsers.setEditable(false);
 
+		// String data;
+		// while ((data = this.br.readLine()) != null) {
+		// connectedUsers.append(data + "\n");
+		// }
+
 		frame.setLayout(null);
 		frame.setSize(1000, 800);
 		frame.add(messageLabel);
@@ -82,6 +90,7 @@ public class Client extends JFrame implements Runnable {
 		frame.add(sendbtn);
 		frame.add(connectUsersLabel);
 		frame.add(allMsgsArea);
+		// frame.add(scrollArea);
 		frame.add(displayArea);
 		frame.add(connectedUsers);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -89,10 +98,19 @@ public class Client extends JFrame implements Runnable {
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
+		Socket s = new Socket("localhost", 60000);
+		PrintWriter o = new PrintWriter(s.getOutputStream(), true);
+		BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 		Scanner sc = new Scanner(System.in);
 		String name = sc.nextLine();
-		Client c = new Client(name);
+		String data;
+		Client c = new Client(s, name, br, o);
+		// while ((data = br.readLine()) != null) {
+		// // connectedUsers.append(data + "\n");
+		// System.out.println(data);
+		// }
 		new Thread(c).start();
+		o.println(name);
 
 	}
 
@@ -101,13 +119,14 @@ public class Client extends JFrame implements Runnable {
 		try {
 			while (true) {
 				String s = br.readLine();
-				if (br != null) {
-					displayArea.append(s + "\n");
+				if (s != null) {
+					this.displayArea.append(s + "\n");
 				}
-
 			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("error" + e);
 		}
 
 	}

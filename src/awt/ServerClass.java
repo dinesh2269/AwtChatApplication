@@ -17,6 +17,7 @@ class HandleClientThread implements Runnable {
 	List<Socket> clientsList;
 	Map<String, String> map;
 	String name;
+	// static List<String> connectedUsers;
 
 	HandleClientThread(String name, Socket ss, List<Socket> clientsList) {
 		this.name = name;
@@ -33,9 +34,11 @@ class HandleClientThread implements Runnable {
 				Scanner sc = new Scanner(System.in)) {
 			while (true) {
 				String str = br.readLine();
-				for (Socket s : clientsList) {
-					PrintWriter o = new PrintWriter(s.getOutputStream(), true);
-					o.println(this.name + ":" + str);
+				if (str != null) {
+					for (Socket s : clientsList) {
+						PrintWriter o = new PrintWriter(s.getOutputStream(), true);
+						o.println(this.name + ":" + str);
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -50,12 +53,17 @@ public class ServerClass {
 		ServerSocket ss = new ServerSocket(60000);
 		System.out.println("waiting");
 		List<Socket> clientsList = new ArrayList<>();
-
+		// HandleClientThread.connectedUsers = new ArrayList<>();
 		while (true) {
 			Socket s = ss.accept();
 			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			String name = br.readLine();
 			System.out.println("listening " + s);
+			// HandleClientThread.connectedUsers.add(name);
+			// PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+			// for (String data : HandleClientThread.connectedUsers) {
+			// out.println(data);
+			// }
 			new Thread(new HandleClientThread(name, s, clientsList)).start();
 		}
 	}
