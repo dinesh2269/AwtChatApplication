@@ -17,8 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-// import TwoWaySocketExample.HandleServerMessages;
-
 public class Client extends JFrame implements Runnable {
 	JFrame frame;
 	JLabel messageLabel;
@@ -78,10 +76,7 @@ public class Client extends JFrame implements Runnable {
 		connectedUsers.setBounds(750, 150, 150, 300);
 		connectedUsers.setEditable(false);
 
-		// String data;
-		// while ((data = this.br.readLine()) != null) {
-		// connectedUsers.append(data + "\n");
-		// }
+		 
 
 		frame.setLayout(null);
 		frame.setSize(1000, 800);
@@ -97,20 +92,29 @@ public class Client extends JFrame implements Runnable {
 		frame.setVisible(true);
 	}
 
+	public void usersList() {
+		String data;
+		try {
+			data=this.br.readLine();
+			String users[]=data.split(" ");
+			for(String s:users) {
+				connectedUsers.append(s+"\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		Socket s = new Socket("localhost", 60000);
 		PrintWriter o = new PrintWriter(s.getOutputStream(), true);
 		BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 		Scanner sc = new Scanner(System.in);
 		String name = sc.nextLine();
-		String data;
-		Client c = new Client(s, name, br, o);
-		// while ((data = br.readLine()) != null) {
-		// // connectedUsers.append(data + "\n");
-		// System.out.println(data);
-		// }
-		new Thread(c).start();
 		o.println(name);
+		Client c = new Client(s, name, br, o);
+		c.usersList();		 
+		new Thread(c).start();
 
 	}
 
