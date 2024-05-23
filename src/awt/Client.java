@@ -122,7 +122,7 @@ public class Client extends JFrame implements Runnable {
 		// =======
 		c.usersList();
 		new Thread(c).start();
-		// >>>>>>> branch 'master' of https://github.com/dinesh2269/AwtChatApplication.git
+		// >>>>>>> branch 'master' of https://github.com/dinesh2269/AwtChatApplication.git from
 
 	}
 
