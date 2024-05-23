@@ -17,8 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-// import TwoWaySocketExample.HandleServerMessages;
-
 public class Client extends JFrame implements Runnable {
 	JFrame frame;
 	JLabel messageLabel;
@@ -62,14 +60,14 @@ public class Client extends JFrame implements Runnable {
 		allMsgsArea.setBounds(100, 250, 100, 30);
 
 		displayArea = new JTextArea();
-		displayArea.setBounds(100, 300, 500, 200);
 		displayArea.setEditable(false);
-		// scrollArea = new JScrollPane(displayArea);
-		// scrollArea.setBounds(100, 300, 500, 200);
-		// scrollArea.setPreferredSize(new Dimension(1000, 1000));
-		// scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		// frame.add(scrollArea);
+
+		scrollArea = new JScrollPane(displayArea);
+		scrollArea.setBounds(100, 300, 500, 200);
+		// scrollArea.setPreferredSize(new Dimension(350, 100));
+		scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.add(scrollArea);
 
 		connectUsersLabel = new JLabel("Connected Users");
 		connectUsersLabel.setBounds(750, 100, 100, 30);
@@ -77,11 +75,6 @@ public class Client extends JFrame implements Runnable {
 		connectedUsers = new JTextArea();
 		connectedUsers.setBounds(750, 150, 150, 300);
 		connectedUsers.setEditable(false);
-
-		// String data;
-		// while ((data = this.br.readLine()) != null) {
-		// connectedUsers.append(data + "\n");
-		// }
 
 		frame.setLayout(null);
 		frame.setSize(1000, 800);
@@ -91,10 +84,24 @@ public class Client extends JFrame implements Runnable {
 		frame.add(connectUsersLabel);
 		frame.add(allMsgsArea);
 		// frame.add(scrollArea);
-		frame.add(displayArea);
+		// frame.add(displayArea);
 		frame.add(connectedUsers);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
+	}
+
+	public void usersList() {
+		String data;
+		try {
+			data = this.br.readLine();
+			String users[] = data.split(" ");
+			for (String s : users) {
+				connectedUsers.append(s + "\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
@@ -105,12 +112,17 @@ public class Client extends JFrame implements Runnable {
 		String name = sc.nextLine();
 		o.println(name);
 		Client c = new Client(s, name, br, o);
+		// <<<<<<< HEAD
+		// new Thread(c).start();
+		// // String data;
+		// // while ((data = br.readLine()) != null) {
+		// // // connectedUsers.append(data + "\n");
+		// // System.out.println(data);
+		// // }
+		// =======
+		c.usersList();
 		new Thread(c).start();
-		// String data;
-		// while ((data = br.readLine()) != null) {
-		// // connectedUsers.append(data + "\n");
-		// System.out.println(data);
-		// }
+		// >>>>>>> branch 'master' of https://github.com/dinesh2269/AwtChatApplication.git
 
 	}
 
