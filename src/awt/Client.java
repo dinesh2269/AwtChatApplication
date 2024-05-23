@@ -103,14 +103,14 @@ public class Client extends JFrame implements Runnable {
 		BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 		Scanner sc = new Scanner(System.in);
 		String name = sc.nextLine();
-		String data;
+		o.println(name);
 		Client c = new Client(s, name, br, o);
+		new Thread(c).start();
+		// String data;
 		// while ((data = br.readLine()) != null) {
 		// // connectedUsers.append(data + "\n");
 		// System.out.println(data);
 		// }
-		new Thread(c).start();
-		o.println(name);
 
 	}
 
