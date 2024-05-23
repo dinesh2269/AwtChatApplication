@@ -89,6 +89,7 @@ public class Client extends JFrame implements Runnable {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		fram.add();
+		fram.add();
 	}
 
 	public void usersList() {
