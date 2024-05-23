@@ -91,6 +91,7 @@ public class Client extends JFrame implements Runnable {
 		frame.add();
 		frame.add();
 		frame.add();
+		fram
 	}
 
 	public void usersList() {
