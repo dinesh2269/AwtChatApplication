@@ -88,8 +88,6 @@ public class Client extends JFrame implements Runnable {
 		frame.add(connectedUsers);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.add();
-		frame.add();
 	}
 
 	public void usersList() {
