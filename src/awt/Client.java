@@ -88,8 +88,6 @@ public class Client extends JFrame implements Runnable {
 		frame.add(connectedUsers);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		fram.add();
-		fram.add();
 	}
 
 	public void usersList() {
@@ -111,20 +109,12 @@ public class Client extends JFrame implements Runnable {
 		PrintWriter o = new PrintWriter(s.getOutputStream(), true);
 		BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter Client Name:");
 		String name = sc.nextLine();
 		o.println(name);
 		Client c = new Client(s, name, br, o);
-		// <<<<<<< HEAD
-		// new Thread(c).start();
-		// // String data;
-		// // while ((data = br.readLine()) != null) {
-		// // // connectedUsers.append(data + "\n");
-		// // System.out.println(data);
-		// // }
-		// =======
 		c.usersList();
 		new Thread(c).start();
-		// >>>>>>> branch 'master' of https://github.com/dinesh2269/AwtChatApplication.git from
 
 	}
 
